@@ -152,7 +152,7 @@ const YoutubeWrapper = styled.div`
     margin-bottom: 50px;
     width: 100%;
     height: 180px;
-    background: linear-gradient(89.92deg, #8b8cff 2.65%, #b062ff 95.96%);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(36,189,208,1) 22%, rgba(37,188,212,1) 29%, rgba(40,183,227,1) 55%, rgba(45,175,253,1) 65%, rgba(43,179,240,1) 78%, rgba(44,177,246,1) 88%);
     display: flex;
     flex-direction: column;
     align-items: center;
