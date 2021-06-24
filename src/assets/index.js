@@ -1,2 +1,2 @@
-export { default as MainPage } from './MainPage';
-export { default as SearchPage } from './SearchPage';
+export { default as playBtn } from './play.svg';
+export { default as albumCover } from './album-cover.jpeg';

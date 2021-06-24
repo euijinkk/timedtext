@@ -15,21 +15,13 @@ import {
   Fullscreen,
 } from 'react-media-player/lib/controls';
 import styled from 'styled-components';
+import { albumCover, playBtn } from './assets';
+import { line } from 'strip-comments';
 // import { CurrentTime } from 'react-media-player/lib/controls';
 
 const App = () => {
   const [tt, setTt] = useState();
   const [currentTime, setCurrentTime] = useState();
-  // const {
-  //   PlayPause,
-  //   CurrentTime,
-  //   Progress,
-  //   SeekBar,
-  //   Duration,
-  //   MuteUnmute,
-  //   Volume,
-  //   Fullscreen,
-  // } = controls;
   const playerRef = useRef();
 
   const getTimedText = useCallback(async () => {
@@ -37,7 +29,13 @@ const App = () => {
       'https://video.google.com/timedtext?lang=ko&v=o_SYttJm0SE',
     );
     var x2js = new X2JS();
-    setTt(x2js.xml2js(timedText.data).transcript.text);
+    const a = x2js
+      .xml2js(timedText.data)
+      .transcript.text.map((line) => ({
+        ...line,
+        __text: line.__text.replace('&#39;', "'"),
+      }));
+    setTt(a);
   }, []);
 
   useEffect(() => {
@@ -58,6 +56,10 @@ const App = () => {
   const handleLyrics = (line) => {
     playerRef.current.context.media.seekTo(parseFloat(line._start));
   };
+
+  // const handlePlay = () => {
+  //   playerRef.current.context.media.play();
+  // }
   return (
     <YoutubeWrapper>
       <Media>
@@ -72,17 +74,29 @@ const App = () => {
             />
           </div>
           <div className="media-controls">
-            <div className="top">
-              <CurrentTime2 />
-              {/* <Progress /> */}
-              <SeekBar2 />
-              <Duration />
-            </div>
-            <div className="bottom">
-              <PlayPause />
-              {/* <MuteUnmute /> */}
-              <Volume2 />
-              {/* <Fullscreen /> */}
+            <img
+              src={albumCover}
+              alt="album-cover"
+              className="left"
+              width="100px"
+              height="100px"
+            />
+
+            <div className="right">
+              <div className="album">방탄소년단 - Love Yourself</div>
+              <div className="top">
+                <CurrentTime2 />
+                {/* <Progress /> */}
+                <SeekBar2 />
+                <Duration />
+              </div>
+              <div className="bottom">
+                <PlayPause />
+                {/* <img src={playBtn} alt="play" onClick={handlePlay} /> */}
+                {/* <MuteUnmute /> */}
+                <Volume2 />
+                {/* <Fullscreen /> */}
+              </div>
             </div>
           </div>
         </div>
@@ -121,6 +135,7 @@ const CurrentTime2 = styled(CurrentTime)`
 const SeekBar2 = styled(SeekBar)`
   /* font-size:px; */
   width: 300px;
+  margin: 0 20px;
 `;
 
 const Volume2 = styled(Volume)`
@@ -128,13 +143,39 @@ const Volume2 = styled(Volume)`
 `;
 
 const YoutubeWrapper = styled.div`
-  
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-  .media{
-    margin: 50px 0;
+
+  .media {
+    margin-bottom: 50px;
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(89.92deg, #8b8cff 2.65%, #b062ff 95.96%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .left {
+      margin-right: 30px;
+    }
+    .right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    &-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      .top {
+        margin: 20px 0;
+      }
+    }
   }
   .lyrics {
     line-height: 30px;
