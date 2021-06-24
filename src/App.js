@@ -23,10 +23,11 @@ const App = () => {
   const [tt, setTt] = useState();
   const [currentTime, setCurrentTime] = useState();
   const playerRef = useRef();
+  const [currentMusic, setCurrentMusic] = useState("o_SYttJm0SE");
 
-  const getTimedText = useCallback(async () => {
+  const getTimedText = useCallback(async (videoId) => {
     const timedText = await axios.get(
-      'https://video.google.com/timedtext?lang=ko&v=o_SYttJm0SE',
+      `https://video.google.com/timedtext?lang=ko&v=${videoId}`,
     );
     var x2js = new X2JS();
     const a = x2js
@@ -39,7 +40,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    getTimedText();
+    getTimedText(currentMusic);
   }, []);
 
   const handleTimeUpdate = (event) => {
@@ -65,13 +66,13 @@ const App = () => {
       <Media>
         <div className="media">
           <div className="media-player" display="none">
-            <Player
-              src="https://www.youtube.com/embed/o_SYttJm0SE"
+            {currentMusic && <Player
+              src={`https://www.youtube.com/embed/${currentMusic}`}
               vendor="youtube"
               onTimeUpdate={handleTimeUpdate}
               ref={playerRef}
               style={{ display: 'none' }}
-            />
+            />}
           </div>
           <div className="media-controls">
             <img
